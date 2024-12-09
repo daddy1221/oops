@@ -1,0 +1,125 @@
+
+ 
+#include <iostream> 
+#include <string> 
+#include <stdexcept> 
+using namespace std; 
+ 
+// Base class Publication 
+class Publication { 
+protected: 
+    string title; 
+    float price; 
+public: 
+    Publication() : title(""), price(0.0) {} 
+ 
+    virtual void getData() { 
+        cout << "Enter title: "; 
+        cin.ignore();  // To ignore leftover newline character 
+        getline(cin, title); 
+        cout << "Enter price: "; 
+        cin >> price; 
+ 
+        // Basic exception check for invalid price input 
+        if (price < 0) { 
+            throw invalid_argument("Invalid price value."); 
+        } 
+    } 
+ 
+    virtual void displayData() const { 
+        cout << "Title: " << title << "\nPrice: $" << price << endl; 
+    } 
+ 
+    virtual void reset() { 
+        title = ""; 
+        price = 0.0; 
+    } 
+}; 
+ 
+// Derived class Book 
+class Book : public Publication { 
+private: 
+    int pageCount; 
+public: 
+    Book() : pageCount(0) {} 
+ 
+    void getData() override { 
+        Publication::getData(); 
+        cout << "Enter page count: "; 
+        cin >> pageCount; 
+ 
+        if (pageCount < 0) { 
+            throw invalid_argument("Invalid page count."); 
+        } 
+    } 
+ 
+    void displayData() const override { 
+        Publication::displayData(); 
+        cout << "Page Count: " << pageCount << endl; 
+    } 
+ 
+    void reset() override { 
+        Publication::reset(); 
+        pageCount = 0; 
+    } 
+}; 
+ 
+// Derived class Tape 
+class Tape : public Publication { 
+private: 
+    float playingTime; 
+public: 
+    Tape() : playingTime(0.0) {} 
+ 
+    void getData() override { 
+        Publication::getData(); 
+        cout << "Enter playing time (in minutes): "; 
+        cin >> playingTime; 
+ 
+        if (playingTime < 0) { 
+            throw invalid_argument("Invalid playing time."); 
+        } 
+    } 
+ 
+    void displayData() const override { 
+        Publication::displayData(); 
+        cout << "Playing Time: " << playingTime << " minutes" << endl; 
+    } 
+ 
+    void reset() override { 
+        Publication::reset(); 
+        playingTime = 0.0; 
+    } 
+}; 
+ 
+int main() { 
+    Book book; 
+    Tape tape; 
+ 
+    // Handling book input 
+    try { 
+        cout << "\nEnter details for book:\n"; 
+        book.getData(); 
+    } catch (const exception& e) { 
+        cout << "Error: " << e.what() << ". Resetting values to zero.\n"; 
+        book.reset(); 
+    } 
+ 
+    // Handling tape input 
+    try { 
+        cout << "\nEnter details for tape:\n"; 
+        tape.getData(); 
+    } catch (const exception& e) { 
+        cout << "Error: " << e.what() << ". Resetting values to zero.\n"; 
+        tape.reset(); 
+    } 
+ 
+    // Display book and tape data 
+    cout << "\nBook Details:\n"; 
+    book.displayData(); 
+ 
+    cout << "\nTape Details:\n"; 
+    tape.displayData(); 
+ 
+    return 0; 
+} 

@@ -1,0 +1,54 @@
+
+#include <iostream> 
+#include <fstream> 
+using namespace std; 
+ 
+int main() { 
+    fstream file; 
+    string name; 
+    int emp_id; 
+    float salary; 
+ 
+    // Step 1: Get information from the user 
+    cout << "Enter employee name: "; 
+    getline(cin, name);  // Get the name from user 
+    cout << "Enter employee ID: "; 
+    cin >> emp_id; 
+    cout << "Enter employee salary: "; 
+    cin >> salary; 
+ 
+    // Step 2: Create and open an output file 
+    file.open("output.txt", ios::out);  // Open file in output mode 
+    if (!file) { 
+        cout << "Error creating file!" << endl; 
+        return 1; 
+    } 
+ 
+    // Step 3: Write information to the file 
+    file << "Name: " << name << endl; 
+    file << "Employee ID: " << emp_id << endl; 
+    file << "Salary: " << salary << endl; 
+    file.close();  // Close the file after writing 
+ 
+    cout << "Information written to the file successfully." << endl; 
+ 
+    // Step 4: Open the file again in input mode to read the information 
+    file.open("output.txt", ios::in);  // Open file in input mode 
+    if (!file) { 
+        cout << "Error opening file for reading!" << endl; 
+        return 1; 
+    } 
+ 
+    // Step 5: Read and display the information from the file 
+    cout << "\nReading information from the file:" << endl; 
+    string line; 
+    while (getline(file, line)) { 
+        cout << line << endl;  // Output each line from the file 
+    } 
+ 
+    file.close();  // Close the file after reading 
+    return 0; 
+} 
+ 
+ 
+ 
